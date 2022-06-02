@@ -57,7 +57,7 @@ defmodule Twirp.MixProject do
   defp deps do
     [
       {:plug, "~> 1.13"},
-      {:norm, "~> 0.9"},
+      {:norm, "~> 0.9.0"},
       {:jason, "~> 1.1"},
       {:protobuf, "~> 0.9"},
       {:google_protos, "~>0.1"},
