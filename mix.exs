@@ -59,7 +59,7 @@ defmodule Twirp.MixProject do
       {:plug, "~> 1.13"},
       {:norm, "~> 0.9"},
       {:jason, "~> 1.1"},
-      {:protobuf, github: "elixir-protobuf/protobuf", commit: "d4181f0215e30affd46cb93a081bf9c461b8bed9", override: true},
+      {:protobuf, github: "elixir-protobuf/protobuf", ref: "d4181f0215e30affd46cb93a081bf9c461b8bed9", override: true},
       {:google_protos, "~> 0.3"},
       {:finch, "~> 0.6", optional: true},
       {:hackney, "~> 1.17", optional: true},
