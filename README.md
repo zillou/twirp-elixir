@@ -13,7 +13,7 @@ Add Twirp to your list of dependencies:
 ```elixir
 def deps do
   [
-    {:twirp, "~> 0.7"}
+    {:twirp, "~> 0.8"}
   ]
 end
 ```
@@ -206,7 +206,7 @@ end
 
 The plug can also be attached within a Phoenix Router. Example below would be accessible at `/rpc/hat` 
 
-URL: `/rpc/hat/twirp/example.Haberdasher.MakeHat` or `/{prefix?}/twirp/{package}.{service}/{method}`
+URL: `/rpc/hat/twirp/example.Haberdasher/MakeHat` or `/{prefix?}/twirp/{package}.{service}/{method}`
 
 ```elixir
 defmodule ExampleWeb.Router do

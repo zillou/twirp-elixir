@@ -1,7 +1,7 @@
 defmodule Twirp.MixProject do
   use Mix.Project
 
-  @version "0.7.4"
+  @version "0.8.0"
   @source_url "https://github.com/keathley/twirp-elixir"
 
   def project do
@@ -30,6 +30,8 @@ defmodule Twirp.MixProject do
 
       description: description(),
       package: package(),
+      aliases: aliases(),
+      preferred_cli_env: ["test.generation": :test],
       name: "Twirp",
       source_url: "https://github.com/keathley/twirp",
       docs: docs()
@@ -54,22 +56,50 @@ defmodule Twirp.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug, "~> 1.8"},
+      {:plug, "~> 1.13"},
       {:norm, "~> 0.9"},
       {:jason, "~> 1.1"},
-      {:protobuf, "~> 0.5"},
+      {:protobuf, "~> 0.9"},
       {:google_protos, "~>0.1"},
       {:finch, "~> 0.6", optional: true},
       {:hackney, "~> 1.17", optional: true},
       {:telemetry, "~> 0.4 or ~> 1.0"},
 
       {:bypass, "~> 2.1", only: [:dev, :test]},
-      {:credo, "~> 1.1", only: [:dev], runtime: false},
+      {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.19", only: [:dev, :test], runtime: false},
       {:plug_cowboy, "~> 2.0", only: [:dev, :test]},
       {:mox, "~> 1.0", only: [:test]},
     ]
+  end
+
+  def aliases do
+    [
+      "test.generation": [
+        "escript.build",
+        "escript.install --force",
+        &generate_protos/1,
+        "test"
+      ]
+    ]
+  end
+
+  defp generate_protos(_) do
+    result = System.cmd("protoc", [
+      "--proto_path=./test/support",
+      "--elixir_out=./test/support",
+      "--twirp_elixir_out=./test/support",
+      "./test/support/service.proto",
+    ])
+
+    case result do
+      {_, 0} ->
+        :ok
+
+      {error, code} ->
+        throw {error, code}
+    end
   end
 
   def description do
