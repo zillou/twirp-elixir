@@ -204,7 +204,7 @@ end
 
 ### Running with Phoenix
 
-The plug can also be attached within a Phoenix Router. Example below would be accessible at `/rpc/hat` 
+The plug can also be attached within a Phoenix Router. Example below would be accessible at `/rpc/hat`
 
 URL: `/rpc/hat/twirp/example.Haberdasher/MakeHat` or `/{prefix?}/twirp/{package}.{service}/{method}`
 
@@ -221,14 +221,13 @@ end
 
 ### Client adapters
 
-Twirp supports either Finch or Hackney as the underlying http client. Finch is the
-default. If you want to configure the adapter you can pass the `adapter` option
-when you call `start_link`.
+Twirp supports Finch as the underlying http client by default. If you want to configure the adapter you
+can pass the `adapter` option when you call `start_link`.
 
 ```elixir
 Client.start_link(
   url: "https://some.url",
-  adapter: {Twirp.Client.Hackney, [pool_opts: [timeout: 30_000, max_connections: 100]]}
+  adapter: {Your.HttpClient, [pool_opts: [timeout: 30_000, max_connections: 100]]}
 )
 ```
 

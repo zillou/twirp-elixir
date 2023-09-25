@@ -14,20 +14,11 @@ defmodule Twirp.MixProject do
       start_permanent: Mix.env() == :prod,
       consolidate_protocols: Mix.env() != :test,
       deps: deps(),
-
       dialyzer: [
         plt_add_deps: :apps_direct,
-        plt_add_apps: [:finch, :hackney],
+        plt_add_apps: [:finch]
       ],
-
-      xref: [
-        exclude: [
-          Finch,
-          :hackney,
-          :hackney_pool,
-        ]
-      ],
-
+      xref: [exclude: [Finch ]],
       description: description(),
       package: package(),
       aliases: aliases(),
@@ -62,9 +53,7 @@ defmodule Twirp.MixProject do
       {:protobuf, "~> 0.9"},
       {:google_protos, "~>0.1"},
       {:finch, "~> 0.6", optional: true},
-      {:hackney, "~> 1.17", optional: true},
       {:telemetry, "~> 0.4 or ~> 1.0"},
-
       {:bypass, "~> 2.1", only: [:dev, :test]},
       {:credo, "~> 1.1", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},

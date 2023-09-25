@@ -18,5 +18,4 @@ defmodule Twirp.Client.AdapterError do
   end
 
   defp adapter_name(:finch), do: "Finch"
-  defp adapter_name(:hackney), do: "Hackney"
 end
