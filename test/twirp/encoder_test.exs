@@ -48,21 +48,35 @@ defmodule Twirp.EncoderTest do
 
   describe "encode/3 as json " do
     test "encodes to JSON without implementing a JSON protocol" do
-      assert ~S({"msg":"test","sub":{"msg":"test"}}) ==
-               Encoder.encode(
-                 %Envelope{msg: "test", sub: %Req{msg: "test"}},
-                 Envelope,
-                 "application/json"
-               )
+      encoded =
+        Encoder.encode(
+          %Envelope{msg: "test", sub: %Req{msg: "test"}},
+          Envelope,
+          "application/json"
+        )
+
+      assert Jason.decode!(encoded) == %{
+               "msg" => "test",
+               "sub" => %{
+                 "msg" => "test"
+               }
+             }
     end
 
     test "encodes repeated structs as JSON without implementing a JSON protocol" do
-      assert ~S({"requests":[{"msg":"test1"},{"msg":"test2"}]}) ==
-               Encoder.encode(
-                 %BatchReq{requests: [%Req{msg: "test1"}, %Req{msg: "test2"}]},
-                 BatchReq,
-                 "application/json"
-               )
+      encoded =
+        Encoder.encode(
+          %BatchReq{requests: [%Req{msg: "test1"}, %Req{msg: "test2"}]},
+          BatchReq,
+          "application/json"
+        )
+
+      assert Jason.decode!(encoded) == %{
+               "requests" => [
+                 %{"msg" => "test1"},
+                 %{"msg" => "test2"}
+               ]
+             }
     end
   end
 end
