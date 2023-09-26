@@ -55,12 +55,12 @@ defmodule Twirp.EncoderTest do
           "application/json"
         )
 
-      assert Jason.decode!(encoded) == %{
+      assert %{
                "msg" => "test",
                "sub" => %{
                  "msg" => "test"
                }
-             }
+             } = Jason.decode!(encoded)
     end
 
     test "encodes repeated structs as JSON without implementing a JSON protocol" do
@@ -71,12 +71,12 @@ defmodule Twirp.EncoderTest do
           "application/json"
         )
 
-      assert Jason.decode!(encoded) == %{
+      assert %{
                "requests" => [
                  %{"msg" => "test1"},
                  %{"msg" => "test2"}
                ]
-             }
+             } = Jason.decode!(encoded)
     end
   end
 end

@@ -14,7 +14,7 @@ defmodule Twirp.Protoc.CLI do
     ctx =
       %Protobuf.Protoc.Context{}
       |> Protobuf.Protoc.CLI.parse_params(request.parameter || "")
-      |> Protobuf.Protoc.CLI.find_types(request.proto_file)
+      |> Protobuf.Protoc.CLI.find_types(request.proto_file, request.file_to_generate)
 
     files =
       request.proto_file
@@ -23,8 +23,18 @@ defmodule Twirp.Protoc.CLI do
       |> Enum.map(&add_comments_to_methods/1)
       |> Enum.map(fn desc -> Twirp.Protoc.Generator.generate(ctx, desc) end)
 
-    response = Google.Protobuf.Compiler.CodeGeneratorResponse.new(file: files)
+    response = %Google.Protobuf.Compiler.CodeGeneratorResponse{
+      file: files,
+      supported_features: supported_features()
+    }
+
     IO.binwrite(Protobuf.Encoder.encode(response))
+  end
+
+  def supported_features() do
+    # The only available feature is proto3 with optional fields.
+    # This is backwards compatible with proto2 optional fields.
+    Google.Protobuf.Compiler.CodeGeneratorResponse.Feature.value(:FEATURE_PROTO3_OPTIONAL)
   end
 
   defp add_comments_to_methods(desc) do
